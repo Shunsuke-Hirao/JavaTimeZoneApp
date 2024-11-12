@@ -22,12 +22,27 @@ public class TimeZoneAppGUI {
         frame.setSize(400, 800); // Set window size
         frame.setLayout(new BorderLayout()); // Use border layout to organize components
 
+        selectionTimeZone();
+
+        yourCountryTime();
+
+
+
+        // Make the window visible
+        frame.setVisible(true);
+    }
+
+    // Method to update the timezone in the time updater thread
+    private void updateTimeZone() {
+        String selectedTimeZone = (String) timezoneComboBox.getSelectedItem(); // Get selected timezone
+        timeUpdater.setTimeZone(selectedTimeZone); // Set timezone in the updater thread
+    }
+
+    private void selectionTimeZone(){
         // Set up the time label to show selected timezone's current time
         timeLabel = new JLabel("Select a timezone", SwingConstants.CENTER);
         timeLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Set font for the label
         frame.add(timeLabel, BorderLayout.CENTER); // Add label to center of frame
-
-        yourCountryTime();
 
         // Create a dropdown with all available timezones
         timezoneComboBox = new JComboBox<>(java.util.TimeZone.getAvailableIDs());
@@ -44,15 +59,6 @@ public class TimeZoneAppGUI {
         // Initialize the time updater thread and start it
         timeUpdater = new TimeUpdater(timeLabel);
         timeUpdater.start();
-
-        // Make the window visible
-        frame.setVisible(true);
-    }
-
-    // Method to update the timezone in the time updater thread
-    private void updateTimeZone() {
-        String selectedTimeZone = (String) timezoneComboBox.getSelectedItem(); // Get selected timezone
-        timeUpdater.setTimeZone(selectedTimeZone); // Set timezone in the updater thread
     }
 
     private void yourCountryTime(){
@@ -64,9 +70,5 @@ public class TimeZoneAppGUI {
         yourCountryTime=new JLabel("Your country time is "+localTime+" ("+defaultTimeZone +")");
         yourCountryTime.setFont(new Font("Arial",Font.PLAIN,15));
         frame.add(yourCountryTime,BorderLayout.SOUTH);
-    }
-
-    private void selectionTimeZone(){
-
     }
 }
