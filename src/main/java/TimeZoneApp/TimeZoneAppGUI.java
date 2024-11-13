@@ -14,6 +14,7 @@ public class TimeZoneAppGUI {
     private JComboBox<String> timezoneComboBox; // Dropdown to select timezone
     private TimeUpdater timeUpdater; // Thread to update time every second
     private JLabel yourCountryTime;
+    private LocalTimeUpdater localTimeUpdater;
 
     public TimeZoneAppGUI() {
         // Set up the main frame (window) for the application
@@ -23,10 +24,7 @@ public class TimeZoneAppGUI {
         frame.setLayout(new BorderLayout()); // Use border layout to organize components
 
         selectionTimeZone();
-
         yourCountryTime();
-
-
 
         // Make the window visible
         frame.setVisible(true);
@@ -62,13 +60,24 @@ public class TimeZoneAppGUI {
     }
 
     private void yourCountryTime(){
-        String defaultTimeZone= TimeZone.getDefault().getID();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getDefault());
-        String localTime=sdf.format(new Date());
-
-        yourCountryTime=new JLabel("Your country time is "+localTime+" ("+defaultTimeZone +")");
+        yourCountryTime=new JLabel("", SwingConstants.CENTER);
         yourCountryTime.setFont(new Font("Arial",Font.PLAIN,15));
-        frame.add(yourCountryTime,BorderLayout.SOUTH);
+        frame.add(yourCountryTime, BorderLayout.SOUTH);
+
+        localTimeUpdater=new LocalTimeUpdater(yourCountryTime);
+        localTimeUpdater.start();
     }
 }
+
+
+//    private void yourCountryTime(){
+//        String defaultTimeZone= TimeZone.getDefault().getID();
+//        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        sdf.setTimeZone(TimeZone.getDefault());
+//        String localTime=sdf.format(new Date());
+//
+//        yourCountryTime=new JLabel("Your country time is "+localTime+" ("+defaultTimeZone +")");
+//        yourCountryTime.setFont(new Font("Arial",Font.PLAIN,15));
+//        frame.add(yourCountryTime,BorderLayout.SOUTH);
+//    }
+
